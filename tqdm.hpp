@@ -90,6 +90,8 @@ class tqdm {
     bool is_tty = isatty(1);
     /// the output width of the progress bar
     int width = 40;
+    /// whether the progress bar is complete
+    bool is_complete;
 
     /// Take measurements at a loop step.
     ///
@@ -152,10 +154,8 @@ class tqdm {
         average(0.0),
         t_start(std::chrono::system_clock::now()), // set the start time to now
         t_last(std::chrono::system_clock::now()),  // set the last time to now
-        bars(THEMES.at(theme)) { }
-
-    /// Destroy an instance of tqdm.
-    ~tqdm() { std::cout << std::endl << std::flush; }
+        bars(THEMES.at(theme)),
+        is_complete(false) { }
 
     /// Call the progress bar (shortcut to the `update` function).
     template<class ...Ts>
@@ -166,12 +166,13 @@ class tqdm {
     /// @param dn the number of steps to update the progress bar by
     ///
     void update(int dn = 1) {
+        // don't update after completion
+        if (is_complete) return;
         // update the iteration counter
         n += dn;
         // check if the terminal supports interactive output and whether this
         // call to update is in the next period and should output to console
-        if(!is_tty || (n % period != 0))
-            return;
+        if (!is_tty || (n % period != 0)) return;
         // measure the average and determine the total difference in time
         auto dt_tot = measure();
         // learn the period value to prevent overhead from the bar
@@ -180,7 +181,8 @@ class tqdm {
         double time_to_complete = (total - n) / average;
         // determine the completion percentage of the loop
         int percent_complete = n / (total * 0.01);
-        if(total - n <= period) {  // progress is complete
+        if (total - n <= period) {  // progress is complete
+            is_complete = true;
             time_to_complete = 0;
             percent_complete = 100;
             average = total / dt_tot;
@@ -213,8 +215,10 @@ class tqdm {
             average << unit << "/s" <<
             "]";
 
+        // print a new line if complete
+        if (is_complete) std::cout << std::endl;
         // flush cout
-        if(total - n > period) std::cout << std::flush;
+        if (total - n > period) std::cout << std::flush;
     }
 };
 
