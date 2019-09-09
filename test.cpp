@@ -1,62 +1,30 @@
+// A test file for tqdm progress bar clone.
+//
+//
+
+#include <unistd.h>
 #include "tqdm.hpp"
 
+// the themes to demo
+auto themes = {
+    "default",
+    "vertical",
+    "basic",
+    "braille",
+    "braille_spin",
+    "line"
+};
+
 int main() {
-
-    int N = 2000;
-    tqdm bar;
-
-    std::cout << "Overhead of loop only:" << std::endl;
-    for(int i = 0; i < 100000000; i++) {
-        bar.progress(i, 100000000);
+    int N = 1000000;
+    for (auto theme : themes) {
+        std::cout << theme << std::endl;
+        tqdm bar(N, "it", theme);
+        for (int i = 0; i < N; ++i) {
+            bar.update();
+            // do work
+            usleep(1);
+        }
     }
-    bar.finish();
-
-
-    std::cout << "Basic:" << std::endl;
-    bar.reset();
-    bar.set_theme_basic();
-    for(int i = 0; i < N; i++) {
-        bar.progress(i, N);
-        usleep(1000);
-    }
-    bar.finish();
-
-    std::cout << "Braille:" << std::endl;
-    bar.reset();
-    bar.set_theme_braille();
-    for(int i = 0; i < N; i++) {
-        bar.progress(i, N);
-        usleep(3000);
-    }
-    bar.finish();
-
-    std::cout << "Line:" << std::endl;
-    bar.reset();
-    bar.set_theme_line();
-    for(int i = 0; i < N; i++) {
-        bar.progress(i, N);
-        usleep(3000);
-    }
-    bar.finish();
-
-    std::cout << "Circles:" << std::endl;
-    bar.reset();
-    bar.set_theme_circle();
-    for(int i = 0; i < N; i++) {
-        bar.progress(i, N);
-        usleep(3000);
-    }
-    bar.finish();
-
-    bar.reset();
-    std::cout << "Vertical bars:" << std::endl;
-    bar.reset();
-    bar.set_theme_vertical();
-    for(int i = 0; i < N; i++) {
-        bar.progress(i, N);
-        usleep(3000);
-    }
-    bar.finish();
-
     return 0;
 }
