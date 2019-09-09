@@ -140,7 +140,7 @@ class tqdm {
     /// @param unit_ the unit to use for the progress bar
     /// @param theme the name of the theme to use
     ///
-    tqdm(
+    explicit tqdm(
         int total_,
         const std::string& unit_ = "it",
         const std::string& theme = "default"
@@ -202,7 +202,7 @@ class tqdm {
         for (int i = 0; i < pieces_filled; i++)
             std::cout << bars[8];
         // print the partial piece
-        if (!in_screen and (n != total))
+        if (!in_screen && (n != total))
             std::cout << bars[8.0 * (total_filled - pieces_filled)];
         // print incomplete pieces
         for (int i = 0; i < width - pieces_filled - 1; i++)
