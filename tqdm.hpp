@@ -191,7 +191,7 @@ class tqdm {
         }
 
         // determine how much of the bar is filled
-        double total_filled = ((double) n / total * width);
+        double total_filled = static_cast<double>(n) / total * width;
         // determine how many complete pieces of the bar there are
         int pieces_filled = static_cast<int>(total_filled);
 
