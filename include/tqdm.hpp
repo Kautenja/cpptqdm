@@ -70,7 +70,7 @@ class tqdm {
     /// the number of calls to `update`
     uint64_t n_updates;
     /// the number of updates before outputting to stdout
-    int period;
+    uint32_t period;
     /// the alpha value for the exponential moving average
     double alpha_ema;
     /// the average rate (exponential moving average)
