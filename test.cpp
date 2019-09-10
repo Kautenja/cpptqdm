@@ -3,7 +3,7 @@
 //
 
 #include <unistd.h>
-#include "tqdm.hpp"
+#include "include/tqdm.hpp"
 
 // the themes to demo
 auto themes = {
