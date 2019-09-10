@@ -60,15 +60,15 @@ class tqdm {
     typedef std::chrono::time_point<std::chrono::system_clock> Timepoint;
 
     /// the total number of iterations in the progress bar
-    int total;
+    uint64_t total;
     /// the unit for the progress bar to use
     std::string unit;
     /// the current iteration
-    int n;
+    uint64_t n;
     /// the n value at the last call to `update`
-    int n_old;
+    uint64_t n_old;
     /// the number of calls to `update`
-    int n_updates;
+    uint64_t n_updates;
     /// the number of updates before outputting to stdout
     int period;
     /// the alpha value for the exponential moving average
@@ -139,7 +139,7 @@ class tqdm {
     /// @param theme the name of the theme to use
     ///
     explicit tqdm(
-        int total_,
+        uint64_t total_,
         const std::string& unit_ = "it",
         const std::string& theme = "default"
     ) :
@@ -164,7 +164,7 @@ class tqdm {
     ///
     /// @param dn the number of steps to update the progress bar by
     ///
-    void update(int dn = 1) {
+    void update(uint64_t dn = 1) {
         // don't update after completion
         if (is_complete) return;
         // update the iteration counter
